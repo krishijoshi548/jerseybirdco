@@ -1,0 +1,6 @@
+{
+  "name": "PitchStitch - Football Kit Journal",
+  "description": "A curated blog and archive featuring football jerseys from the Premier League and National Teams across top brands like Nike, Adidas, Puma, and Umbro with live filtering.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
