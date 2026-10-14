@@ -45,6 +45,82 @@ export interface JerseyBlog {
 
 export const JERSEY_BLOGS: JerseyBlog[] = [
   {
+    id: 'england-home-2024-25',
+    title: 'England Home Kit 2024/25: The Classic White & Navy Three Lions',
+    team: 'England National Team',
+    teamType: 'National Team',
+    season: '2024/25',
+    kitType: 'Home',
+    rating: 9.4,
+    readingTime: '5 min read',
+    publishDate: 'Apr 22, 2024',
+    priceUSD: 100,
+    priceUSDAuthentic: 160,
+    availableOptions: [
+      {
+        edition: 'Authentic Match Pro Vapor (Player Cut)',
+        priceUSD: 160,
+        priceGBP: 135,
+        priceEUR: 155,
+        features: 'Exact shirt worn by Harry Kane and Jude Bellingham with seamless heat-sealed Three Lions badge.'
+      },
+      {
+        edition: 'Stadium Supporter Replica',
+        priceUSD: 100,
+        priceGBP: 85,
+        priceEUR: 95,
+        features: 'Classic bright optic white with navy collar and ribbed cuffs featuring red & blue striped tipping.'
+      },
+      {
+        edition: 'Long Sleeve Wembley Edition',
+        priceUSD: 110,
+        priceGBP: 95,
+        priceEUR: 105,
+        features: 'Full-length sleeves with elasticated ribbed cuffs and navy cuff trim.'
+      },
+      {
+        edition: 'Youth / Junior Set',
+        priceUSD: 75,
+        priceGBP: 60,
+        priceEUR: 70,
+        features: 'Includes shirt and matching navy shorts for junior supporters.'
+      }
+    ],
+    availableSizes: ['XS', 'S', 'M', 'L', 'XL', '2XL', '3XL'],
+    sleeveOptions: ['Short Sleeve', 'Long Sleeve (+ $10)'],
+    badgeOptions: [
+      { name: 'UEFA Euro 2024 Sleeve Badge', priceUSD: 15 },
+      { name: 'UEFA Foundation For Children Badge', priceUSD: 8 },
+      { name: 'Official Player Name & Number (Bellingham 10, Saka 7, Kane 9)', priceUSD: 20 },
+      { name: 'No Badges (Clean Look)', priceUSD: 0 }
+    ],
+    inStockStatus: 'In Stock',
+    retailers: [
+      { name: 'England FA Store Official', estimatedPrice: '$100', inStock: true },
+      { name: 'Fanatics International', estimatedPrice: '$98', inStock: true },
+      { name: 'Pro:Direct Soccer', estimatedPrice: '$100', inStock: true }
+    ],
+    author: {
+      name: 'Oliver Vance',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      role: 'International Apparel Specialist'
+    },
+    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+    accentColor: '#002B7F',
+    shortDescription: 'England’s 2024 home strip reinterprets their legendary 1966 track top aesthetic with classic navy cuffs, fine red sleeve pinstripes, and an iconic collar fold.',
+    designStory: 'Crafted as the tournament armor for Gareth Southgate’s squad during Euro 2024 in Germany, the 2024 England home shirt delivers pure understated elegance. The crisp optic white torso is framed by a bold navy foldover collar accented with a graduated red and blue stripe. It represents England’s heritage from 1966 and 1996 while incorporating next-generation 4D ventilation.',
+    fabricTech: '4D moisture-mapped open-cell micro knit',
+    collarStyle: 'Retro hybrid polo-crew with navy base and tricolor stripe tipping',
+    keyDetails: [
+      'Classic white torso with navy collar and cuffs',
+      'Embroidered Three Lions federation crest with silver single star',
+      'Red and blue striped tape on sleeve cuffs and collar fold',
+      'Tailored athletic contour engineered for Wembley tournament nights'
+    ],
+    iconicMoment: 'Ollie Watkins turning brilliantly in the 90th minute to fire England into the Euro 2024 final against the Netherlands in Dortmund.',
+    marketRarity: 'Collector Favourite'
+  },
+  {
     id: 'arsenal-home-2023-24',
     title: 'Arsenal Home Kit 2023/24: The Invincibles Gold Homage',
     team: 'Arsenal FC',

@@ -2,6 +2,7 @@ import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { JERSEY_BLOGS, JerseyBlog } from './data/jerseys';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
+import { EnglandSpotlight } from './components/EnglandSpotlight';
 import { FilterBar } from './components/FilterBar';
 import { JerseyCard } from './components/JerseyCard';
 import { JerseyModal } from './components/JerseyModal';
@@ -29,9 +30,9 @@ export default function App() {
   const [bookmarkedIds, setBookmarkedIds] = useState<string[]>(() => {
     try {
       const saved = localStorage.getItem(LOCAL_STORAGE_BOOKMARKS_KEY);
-      return saved ? JSON.parse(saved) : ['arsenal-home-2023-24', 'argentina-home-2022-23'];
+      return saved ? JSON.parse(saved) : ['england-home-2024-25', 'arsenal-home-2023-24'];
     } catch {
-      return ['arsenal-home-2023-24', 'argentina-home-2022-23'];
+      return ['england-home-2024-25', 'arsenal-home-2023-24'];
     }
   });
 
@@ -87,6 +88,12 @@ export default function App() {
 
   const handleSelectTag = (tag: string) => {
     setSearchQuery(tag);
+    searchInputRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  const handleSelectEnglandKit = (teamName: string) => {
+    setSearchQuery(teamName);
+    setSelectedCategory('National Team');
     searchInputRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
@@ -182,7 +189,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-['Plus_Jakarta_Sans'] selection:bg-emerald-500 selection:text-slate-950">
+    <div className="min-h-screen bg-[#0b1120] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans'] selection:bg-orange-500 selection:text-white">
       {/* Top Navbar with JerseyBird Branding and Taskbar Sections */}
       <Navbar
         selectedCategory={selectedCategory}
@@ -201,7 +208,7 @@ export default function App() {
       />
 
       <main className="flex-1">
-        {/* Hero Section */}
+        {/* Playful Hero Section */}
         <Hero
           onSelectTag={handleSelectTag}
           totalKits={JERSEY_BLOGS.length}
@@ -209,8 +216,14 @@ export default function App() {
         />
 
         {/* Content Container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-5">
-          {/* Filter Bar (No manufacturer references, includes kit types & price ranges) */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
+          {/* England National Team Spotlight Card with Action Photo */}
+          <EnglandSpotlight
+            onSelectEnglandKit={handleSelectEnglandKit}
+            currency={currency}
+          />
+
+          {/* Filter Bar with Warm Playful Contrast */}
           <FilterBar
             searchQuery={searchQuery}
             onSearchChange={setSearchQuery}
@@ -246,20 +259,20 @@ export default function App() {
             </div>
           ) : (
             /* Empty State */
-            <div className="py-20 px-4 text-center rounded-2xl bg-slate-900/50 border border-slate-800 flex flex-col items-center justify-center">
-              <div className="w-16 h-16 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-slate-400 mb-4">
-                <SearchX className="w-8 h-8 text-slate-400" />
+            <div className="py-20 px-4 text-center rounded-3xl bg-slate-900/60 border border-slate-800 flex flex-col items-center justify-center shadow-xl">
+              <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700 flex items-center justify-center text-amber-400 mb-4 shadow">
+                <SearchX className="w-8 h-8" />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2 font-['Cabinet_Grotesk']">
-                No Football Jerseys Match Your Criteria
+              <h3 className="text-xl font-black text-white mb-2 font-['Cabinet_Grotesk']">
+                No Football Jerseys Found
               </h3>
-              <p className="text-sm text-slate-400 max-w-md mb-6 leading-relaxed">
-                We couldn&apos;t find any jerseys matching your current combination of keywords,
-                season, kit type, or price filters.
+              <p className="text-sm text-slate-300 max-w-md mb-6 leading-relaxed">
+                Try searching for another team (like &ldquo;England&rdquo; or &ldquo;Arsenal&rdquo;) or
+                resetting your price & kit type filters.
               </p>
               <button
                 onClick={handleResetFilters}
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs tracking-wider uppercase transition-all shadow-lg shadow-emerald-500/20 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-slate-950 font-black text-xs tracking-wider uppercase transition-all shadow-lg shadow-orange-500/25 cursor-pointer transform hover:-translate-y-0.5"
               >
                 <RotateCcw className="w-4 h-4" />
                 <span>Reset All Filters</span>
