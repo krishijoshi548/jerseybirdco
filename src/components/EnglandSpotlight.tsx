@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ArrowRight, Shield, Flame, Trophy } from 'lucide-react';
+import { ArrowRight, Shield, Flame, Trophy, Camera } from 'lucide-react';
 
 interface EnglandSpotlightProps {
   onSelectEnglandKit: (teamName: string) => void;
@@ -10,14 +10,29 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
   onSelectEnglandKit,
   currency,
 }) => {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [selectedPhoto, setSelectedPhoto] = useState<number>(0);
+  const [imageError, setImageError] = useState<Record<number, boolean>>({});
 
   const formatPrice = (usd: number) => {
     if (currency === 'GBP') return `£${Math.round(usd * 0.82)}`;
     if (currency === 'EUR') return `€${Math.round(usd * 0.94)}`;
     return `$${usd}`;
   };
+
+  const englandPhotos = [
+    {
+      url: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=480&h=320&q=55&fm=webp',
+      alt: 'England National Football Team players on pitch in white 2024 home shirts with Three Lions crest',
+      caption: 'Three Lions Match Day at Wembley Stadium',
+      tag: 'Euro 2024 White Kit',
+    },
+    {
+      url: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=480&h=320&q=55&fm=webp',
+      alt: 'England National Team players celebrating under tournament floodlights in team shirts',
+      caption: 'Squad Goal Celebration Under Tournament Floodlights',
+      tag: 'Match Action',
+    },
+  ];
 
   return (
     <section aria-labelledby="england-spotlight-heading" className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/70 to-slate-900 border-2 border-indigo-500/30 shadow-2xl p-6 sm:p-8 mb-10 transition-all hover:border-indigo-400/50">
@@ -96,24 +111,18 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
           </div>
         </div>
 
-        {/* Right: Featured England National Team Photo - Small file size, explicit alt text */}
-        <div className="lg:col-span-5 relative">
+        {/* Right: Featured England National Team Photos - small size, explicit alt text, multiple viewable pictures */}
+        <div className="lg:col-span-5 space-y-3">
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border-2 border-indigo-400/30 shadow-2xl bg-slate-950 group">
-            {!imageError ? (
+            {!imageError[selectedPhoto] ? (
               <img
-                src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=75"
-                alt="England National Football Team players on the pitch under floodlights celebrating in white Euro 2024 home shirts"
+                src={englandPhotos[selectedPhoto].url}
+                alt={englandPhotos[selectedPhoto].alt}
                 loading="lazy"
-                onLoad={() => setImageLoaded(true)}
-                onError={() => setImageError(true)}
-                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ${
-                  imageLoaded ? 'opacity-100' : 'opacity-80'
-                }`}
+                onError={() => setImageError((prev) => ({ ...prev, [selectedPhoto]: true }))}
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
               />
-            ) : null}
-
-            {/* Visual Fallback Graphic ensuring picture is always clearly seen */}
-            {imageError && (
+            ) : (
               <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-950 via-slate-900 to-red-950 text-center">
                 <Shield className="w-16 h-16 text-red-500 mb-2" />
                 <span className="text-sm font-black text-white font-['Cabinet_Grotesk']">
@@ -133,16 +142,38 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
             <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
               <div>
                 <span className="block text-white font-black text-sm font-['Cabinet_Grotesk']">
-                  England National Football Team
+                  {englandPhotos[selectedPhoto].caption}
                 </span>
                 <span className="text-[11px] text-slate-300">
                   Wembley Stadium • European Championship Campaign
                 </span>
               </div>
               <div className="px-2.5 py-1 rounded-lg bg-red-600 text-white text-[10px] font-black uppercase tracking-wider shadow">
-                Featured
+                {englandPhotos[selectedPhoto].tag}
               </div>
             </div>
+          </div>
+
+          {/* Photo Switcher Thumbnails so users can see multiple authentic England pictures */}
+          <div className="flex items-center gap-2">
+            <span className="text-[11px] text-slate-400 flex items-center gap-1">
+              <Camera className="w-3 h-3 text-amber-400" />
+              <span>England Photos:</span>
+            </span>
+            {englandPhotos.map((photo, idx) => (
+              <button
+                key={idx}
+                onClick={() => setSelectedPhoto(idx)}
+                className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                  selectedPhoto === idx
+                    ? 'bg-red-500/20 text-red-300 border border-red-500/50'
+                    : 'bg-slate-900 hover:bg-slate-800 text-slate-400 border border-slate-800'
+                }`}
+              >
+                <span>Photo {idx + 1}</span>
+                <span className="text-[10px] opacity-75">({photo.tag})</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>

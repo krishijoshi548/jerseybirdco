@@ -54,17 +54,20 @@ export function getJerseySEOTitle(jersey: JerseyBlog): string {
 }
 
 export function getJerseySEODescription(jersey: JerseyBlog): string {
-  // Format target: 140-160 characters
   // Primary keyword: "${jersey.team} jersey prices"
-  const rawDesc = `Compare ${jersey.team} ${jersey.kitType} jersey prices from $${jersey.priceUSD} for replicas to $${jersey.priceUSDAuthentic} for authentic match editions on JerseyBird.`;
-  if (rawDesc.length >= 140 && rawDesc.length <= 160) {
-    return rawDesc;
+  // Format target: 140-160 characters strictly
+  const template = `Compare official ${jersey.team} ${jersey.kitType} jersey prices from $${jersey.priceUSD} for fan replicas to $${jersey.priceUSDAuthentic} for player match editions, with badge options on JerseyBird.`;
+  if (template.length >= 140 && template.length <= 160) {
+    return template;
   }
-  if (rawDesc.length < 140) {
-    const padded = `Compare official ${jersey.team} ${jersey.kitType} jersey prices from $${jersey.priceUSD} for replicas to $${jersey.priceUSDAuthentic} for authentic editions with badge options on JerseyBird.`;
-    return padded.length > 160 ? padded.slice(0, 157) + '...' : padded;
+  if (template.length < 140) {
+    const extended = `Compare official ${jersey.team} ${jersey.kitType} jersey prices from $${jersey.priceUSD} for fan replicas to $${jersey.priceUSDAuthentic} for player match editions, badges, and sizing guides on JerseyBird.`;
+    if (extended.length >= 140 && extended.length <= 160) {
+      return extended;
+    }
+    return extended.slice(0, 160);
   }
-  return rawDesc.slice(0, 157) + '...';
+  return template.slice(0, 160);
 }
 
 export function updateMetaTags(meta: {

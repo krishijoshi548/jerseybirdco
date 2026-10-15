@@ -429,12 +429,36 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
           </div>
 
           {/* Section 3: H2 in Question & Answer format for Design Story */}
-          <div className="space-y-2 pt-2">
+          <div className="space-y-3 pt-2">
             <h2 className="text-base font-black text-white flex items-center gap-2 font-['Cabinet_Grotesk']">
               <Trophy className="w-4 h-4 text-amber-400" />
               What Is the Cultural Design Story and Heritage Behind This Shirt?
             </h2>
             <p className="text-slate-200 leading-relaxed text-sm">{jersey.shortDescription}</p>
+
+            {/* Embedded Article Photo with small size (<100kb), alt text & visible picture */}
+            {jersey.articleImage && (
+              <figure className="my-4 rounded-2xl overflow-hidden border border-slate-700/80 bg-[#070c18] shadow-2xl">
+                <img
+                  src={jersey.articleImage}
+                  alt={jersey.articleImageAlt || jersey.altText}
+                  className="w-full h-56 sm:h-72 object-cover object-center"
+                  loading="lazy"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = jersey.image;
+                  }}
+                />
+                <figcaption className="px-4 py-2.5 text-xs text-slate-300 bg-slate-950/95 border-t border-slate-800 flex items-center justify-between">
+                  <span className="font-medium text-slate-200">
+                    {jersey.articleImageCaption || `Official ${jersey.team} match kit action photo`}
+                  </span>
+                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider shrink-0 ml-2 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
+                    Photo &lt; 100KB
+                  </span>
+                </figcaption>
+              </figure>
+            )}
+
             <p className="text-slate-300 leading-relaxed text-sm">{jersey.designStory}</p>
           </div>
 
