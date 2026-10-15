@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tag, Sparkles, CheckCircle2, Flame, Heart, Shirt, Trophy } from 'lucide-react';
+import { Tag, Sparkles, Flame, Trophy, HelpCircle } from 'lucide-react';
 
 interface HeroProps {
   onSelectTag: (tag: string) => void;
@@ -31,10 +31,10 @@ export const Hero: React.FC<HeroProps> = ({ onSelectTag, totalKits, selectedCate
           {/* Playful Pill Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-gradient-to-r from-orange-500/15 via-rose-500/15 to-amber-500/15 border border-orange-500/30 text-amber-300 text-xs font-black mb-4 shadow-sm">
             <Sparkles className="w-3.5 h-3.5 text-orange-400" />
-            <span>Official Jersey Prices, Cuts & Match Day Editions</span>
+            <span>Official Football Jersey Prices, Cuts & Match Day Editions</span>
           </div>
 
-          {/* Headline */}
+          {/* Primary H1 Heading */}
           <h1 className="text-3xl sm:text-5xl lg:text-6xl font-black tracking-tight text-white font-['Cabinet_Grotesk'] leading-[1.08] mb-4">
             {selectedCategory === 'National Team' ? (
               <>
@@ -60,13 +60,20 @@ export const Hero: React.FC<HeroProps> = ({ onSelectTag, totalKits, selectedCate
             )}
           </h1>
 
-          {/* Subtitle */}
-          <p className="text-slate-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-2xl mb-6">
-            Compare real retail prices for official player-issue cuts, stadium replicas, long sleeve
-            editions, and tournament sleeve badges.
+          {/* SEO Subheading H2 in Question format */}
+          <h2 className="text-sm sm:text-base font-bold text-amber-300 flex items-center justify-center gap-1.5 mb-2 font-['Space_Grotesk']">
+            <HelpCircle className="w-4 h-4 text-orange-400 shrink-0" />
+            How Do Football Jersey Prices and Available Editions Compare?
+          </h2>
+
+          {/* Direct Answer Paragraph for SEO featured snippet optimization */}
+          <p className="text-slate-300 text-xs sm:text-sm lg:text-base leading-relaxed max-w-2xl mb-6">
+            Official football jersey prices range from $85 to $110 for standard stadium replicas and
+            $130 to $180 for authentic match player-issue cuts. National team tournament jerseys with
+            official sleeve patches and star player name printing average between $100 and $160.
           </p>
 
-          {/* Playful Stickers Bar */}
+          {/* Value Highlights */}
           <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 py-3 px-5 rounded-2xl bg-slate-900/80 border border-slate-800 mb-6 text-xs shadow-lg backdrop-blur-sm">
             <div className="flex items-center gap-1.5 text-orange-300 font-bold">
               <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse" />
@@ -84,7 +91,7 @@ export const Hero: React.FC<HeroProps> = ({ onSelectTag, totalKits, selectedCate
             </div>
           </div>
 
-          {/* Quick Find Topic Stickers */}
+          {/* Quick Jump Topic Tags */}
           <div className="flex flex-wrap items-center justify-center gap-2 text-xs">
             <span className="text-slate-400 mr-1 font-bold flex items-center gap-1">
               <Flame className="w-3.5 h-3.5 text-orange-400" /> Quick Jump:

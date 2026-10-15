@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Bookmark, ArrowRight, Shield, Globe, Tag, Layers, Check, Sparkles, Flame } from 'lucide-react';
+import { Bookmark, ArrowRight, Shield, Globe, Tag, Layers, Check, Sparkles } from 'lucide-react';
 import { JerseyBlog } from '../data/jerseys';
 
 interface JerseyCardProps {
@@ -42,29 +42,29 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
 
   return (
     <article className="group relative flex flex-col bg-slate-900/90 hover:bg-[#141d33] border border-slate-800 hover:border-orange-500/50 rounded-3xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-orange-500/15 hover:-translate-y-1.5">
-      {/* Top Image Container */}
+      {/* Top Image Container - small file size image with descriptive alt text */}
       <div className="relative aspect-[16/10] overflow-hidden bg-slate-950">
         {!imageError ? (
           <img
             src={jersey.image}
-            alt={jersey.title}
+            alt={jersey.altText}
             loading="lazy"
             onLoad={() => setImageLoaded(true)}
             onError={() => setImageError(true)}
             className={`w-full h-full object-cover object-center group-hover:scale-108 transition-transform duration-700 ease-out ${
-              imageLoaded ? 'opacity-100' : 'opacity-0'
+              imageLoaded ? 'opacity-100' : 'opacity-80'
             }`}
           />
         ) : null}
 
-        {/* Fallback Graphic */}
-        {(!imageLoaded || imageError) && (
+        {/* Fallback Graphic ensuring picture is always clearly seen */}
+        {imageError && (
           <div
             className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900"
             style={{ borderTop: `4px solid ${jersey.accentColor}` }}
           >
             <Shield
-              className="w-12 h-12 mb-2 opacity-80"
+              className="w-12 h-12 mb-2 opacity-90"
               style={{ color: jersey.accentColor }}
             />
             <span className="text-xs uppercase tracking-widest font-black text-slate-200">
@@ -79,7 +79,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
         {/* Top Badges */}
         <div className="absolute top-3 left-3 right-3 flex items-center justify-between gap-2 z-10">
           <div className="flex items-center gap-1.5 flex-wrap">
-            {/* League Sticker Badge */}
+            {/* League Badge */}
             <span
               className={`inline-flex items-center gap-1 text-[11px] font-black px-2.5 py-1 rounded-full backdrop-blur-md shadow-md ${
                 jersey.teamType === 'Premier League'
@@ -107,7 +107,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
               e.stopPropagation();
               onToggleBookmark(jersey);
             }}
-            aria-label={isBookmarked ? 'Remove saved jersey' : 'Save jersey'}
+            aria-label={isBookmarked ? `Remove ${jersey.team} from saved jerseys` : `Save ${jersey.team} jersey`}
             className={`p-2 rounded-xl backdrop-blur-md transition-all cursor-pointer ${
               isBookmarked
                 ? 'bg-amber-400 text-slate-950 shadow-lg shadow-amber-400/40 scale-105'
@@ -139,7 +139,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
         </div>
       </div>
 
-      {/* Card Content */}
+      {/* Card Content with Q&A Format for SEO */}
       <div className="p-5 flex-1 flex flex-col justify-between">
         <div>
           {/* Team & Kit Option */}
@@ -150,17 +150,21 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
             </span>
           </div>
 
-          {/* Title */}
+          {/* Subheading in direct Question format */}
           <h2
             onClick={() => onOpenDetails(jersey)}
             className="text-base sm:text-lg font-black text-white group-hover:text-amber-300 transition-colors line-clamp-2 cursor-pointer mb-2 font-['Cabinet_Grotesk'] tracking-tight"
           >
-            {jersey.title}
+            How Much Is the {jersey.team} {jersey.kitType} Jersey?
           </h2>
 
-          {/* Short description */}
+          {/* Paragraph answering the question directly */}
           <p className="text-xs text-slate-300 line-clamp-2 mb-3.5 leading-relaxed">
-            {jersey.shortDescription}
+            The {jersey.team} {jersey.season} {jersey.kitType.toLowerCase()} jersey starts at{' '}
+            <strong className="text-amber-300 font-bold">{formatPrice(jersey.priceUSD)}</strong> for
+            standard fan replicas and{' '}
+            <strong className="text-amber-300 font-bold">{formatPrice(jersey.priceUSDAuthentic)}</strong> for
+            authentic match pro cuts.
           </p>
 
           {/* Available Editions & Sizing Preview */}
@@ -192,7 +196,7 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
           </div>
         </div>
 
-        {/* Footer info: Call to action */}
+        {/* Footer info: Call to action with explicit descriptive anchor text */}
         <div className="pt-3 border-t border-slate-800 flex items-center justify-between gap-2">
           <div className="text-[11px] text-slate-400">
             <span className="block font-semibold text-slate-300">{jersey.sleeveOptions[0]}</span>
@@ -208,8 +212,9 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
               }
             }}
             className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-slate-950 transition-all cursor-pointer shadow-md shadow-orange-500/20 transform hover:-translate-y-0.5"
+            title={`View ${jersey.team} ${jersey.kitType} Jersey Options and Pricing`}
           >
-            <span>Options & Prices</span>
+            <span>Options & Prices for {jersey.team}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </a>
         </div>

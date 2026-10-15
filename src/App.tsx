@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { JERSEY_BLOGS, JerseyBlog } from './data/jerseys';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -6,10 +6,11 @@ import { EnglandSpotlight } from './components/EnglandSpotlight';
 import { FilterBar } from './components/FilterBar';
 import { JerseyCard } from './components/JerseyCard';
 import { JerseyModal } from './components/JerseyModal';
+import { JerseyFaq } from './components/JerseyFaq';
 import { BookmarksDrawer } from './components/BookmarksDrawer';
 import { Footer } from './components/Footer';
 import { SearchX, RotateCcw } from 'lucide-react';
-import { SEO_CONFIGS, getJerseySEODescription, updateMetaTags } from './utils/seo';
+import { SEO_CONFIGS, getJerseySEOTitle, getJerseySEODescription, updateMetaTags } from './utils/seo';
 
 const LOCAL_STORAGE_BOOKMARKS_KEY = 'jerseybird_saved_kits';
 
@@ -70,7 +71,7 @@ export default function App() {
     if (activeJersey) {
       const uniqueUrl = `/jersey/${activeJersey.id}`;
       updateMetaTags({
-        title: `${activeJersey.title} Prices & Options | JerseyBird`,
+        title: getJerseySEOTitle(activeJersey),
         description: getJerseySEODescription(activeJersey),
         urlPath: uniqueUrl,
         image: activeJersey.image,
@@ -278,7 +279,6 @@ export default function App() {
 
   const handleCloseModal = () => {
     setActiveJersey(null);
-    // Restore classification URL
     if (selectedCategory === 'National Team') {
       window.history.pushState({}, '', SEO_CONFIGS.national.path);
     } else if (selectedCategory === 'Premier League') {
@@ -308,7 +308,7 @@ export default function App() {
       />
 
       <main className="flex-1">
-        {/* Playful Hero Section */}
+        {/* Playful Hero Section with Q&A Heading */}
         <Hero
           onSelectTag={handleSelectTag}
           totalKits={JERSEY_BLOGS.length}
@@ -317,7 +317,7 @@ export default function App() {
 
         {/* Content Container */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-4">
-          {/* England National Team Spotlight Card with Action Photo */}
+          {/* England National Team Spotlight Card with Action Photo & Q&A Subheading */}
           <EnglandSpotlight
             onSelectEnglandKit={handleSelectEnglandKit}
             currency={currency}
@@ -379,6 +379,9 @@ export default function App() {
               </button>
             </div>
           )}
+
+          {/* SEO Q&A Knowledge Guide Section */}
+          <JerseyFaq />
         </div>
       </main>
 
@@ -390,7 +393,7 @@ export default function App() {
         }}
       />
 
-      {/* Jersey Options & Pricing Modal */}
+      {/* Jersey Options & Pricing Modal with Q&A Structure */}
       <JerseyModal
         jersey={activeJersey}
         onClose={handleCloseModal}

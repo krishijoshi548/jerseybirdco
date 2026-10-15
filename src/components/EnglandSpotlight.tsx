@@ -1,6 +1,5 @@
-import React from 'react';
-import { ArrowRight, Sparkles, Shield, Heart, Star, Flame, Trophy } from 'lucide-react';
-import { JerseyBlog } from '../data/jerseys';
+import React, { useState } from 'react';
+import { ArrowRight, Shield, Flame, Trophy } from 'lucide-react';
 
 interface EnglandSpotlightProps {
   onSelectEnglandKit: (teamName: string) => void;
@@ -11,6 +10,9 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
   onSelectEnglandKit,
   currency,
 }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageError, setImageError] = useState(false);
+
   const formatPrice = (usd: number) => {
     if (currency === 'GBP') return `£${Math.round(usd * 0.82)}`;
     if (currency === 'EUR') return `€${Math.round(usd * 0.94)}`;
@@ -18,13 +20,13 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
   };
 
   return (
-    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/70 to-slate-900 border-2 border-indigo-500/30 shadow-2xl p-6 sm:p-8 mb-10 transition-all hover:border-indigo-400/50">
-      {/* Playful background decorative glows */}
+    <section aria-labelledby="england-spotlight-heading" className="relative overflow-hidden rounded-3xl bg-gradient-to-r from-slate-900 via-indigo-950/70 to-slate-900 border-2 border-indigo-500/30 shadow-2xl p-6 sm:p-8 mb-10 transition-all hover:border-indigo-400/50">
+      {/* Background decorative glows */}
       <div className="absolute -top-16 -right-16 w-64 h-64 bg-red-500/15 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute -bottom-16 -left-16 w-64 h-64 bg-blue-500/15 rounded-full blur-3xl pointer-events-none" />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-        {/* Left: England Team Info & Fun Badges */}
+        {/* Left: England Team Info in Q&A Format for SEO */}
         <div className="lg:col-span-7 space-y-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/15 text-red-300 border border-red-500/30 text-xs font-bold tracking-wide">
@@ -34,24 +36,28 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
               <Trophy className="w-3.5 h-3.5" /> Euro 2024 Finalists
             </span>
             <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-blue-500/15 text-sky-300 border border-blue-500/30 text-xs font-bold">
-              <Flame className="w-3.5 h-3.5 text-orange-400" /> Most Searched Squad
+              <Flame className="w-3.5 h-3.5 text-orange-400" /> Star Squad Strips
             </span>
           </div>
 
-          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-['Cabinet_Grotesk'] tracking-tight leading-tight">
-            England National Team{' '}
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-amber-300 to-sky-300">
-              Official Kits & Strips
-            </span>
+          {/* H2 in Question format for SEO snippet optimization */}
+          <h2
+            id="england-spotlight-heading"
+            className="text-2xl sm:text-3xl lg:text-4xl font-black text-white font-['Cabinet_Grotesk'] tracking-tight leading-tight"
+          >
+            What Are the Official England National Team Jersey Options and Prices?
           </h2>
 
+          {/* Paragraph in direct Answer format */}
           <p className="text-slate-300 text-xs sm:text-sm leading-relaxed max-w-xl">
-            From the classic pure white Wembley home strip to the bold Renaissance deep-raisin away
-            edition worn by Jude Bellingham, Harry Kane, and Bukayo Saka. Compare authentic match
-            pro-cut pricing against fan replica options.
+            Official England National Team football jerseys are available in two primary editions:
+            the Stadium Supporter Replica starting at {formatPrice(100)} and the Authentic Pro Match
+            Vapor edition priced at {formatPrice(160)}. Both editions feature the iconic Three Lions
+            crest, with optional UEFA Euro tournament sleeve badges and official star player printing
+            for Jude Bellingham, Harry Kane, and Bukayo Saka.
           </p>
 
-          {/* Quick squad player tags */}
+          {/* Star player print options */}
           <div className="flex flex-wrap items-center gap-2 pt-1 text-xs text-slate-300">
             <span className="text-slate-400 font-medium">Star Print Options:</span>
             {['Bellingham #10', 'Kane #9', 'Saka #7', 'Foden #11', 'Palmer #20'].map((player) => (
@@ -64,7 +70,7 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
             ))}
           </div>
 
-          {/* Pricing & Call to Action */}
+          {/* Pricing & Call to Action with explicit descriptive anchor text */}
           <div className="pt-2 flex flex-wrap items-center gap-4">
             <div className="flex items-center gap-2">
               <span className="text-xs text-slate-400">Replicas from:</span>
@@ -74,34 +80,56 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
               <span className="text-xs text-slate-500">• Pro Match: {formatPrice(160)}</span>
             </div>
 
-            <button
-              onClick={() => onSelectEnglandKit('England')}
+            <a
+              href="/national-jerseys"
+              onClick={(e) => {
+                if (!e.metaKey && !e.ctrlKey) {
+                  e.preventDefault();
+                  onSelectEnglandKit('England');
+                }
+              }}
               className="inline-flex items-center gap-2 px-4 py-2.5 rounded-xl bg-gradient-to-r from-red-500 via-rose-500 to-amber-500 hover:from-red-400 hover:to-amber-400 text-white font-bold text-xs uppercase tracking-wider shadow-lg shadow-red-500/25 transition-all transform hover:-translate-y-0.5 cursor-pointer"
             >
-              <span>Explore England Jerseys</span>
+              <span>Explore England National Team Jerseys</span>
               <ArrowRight className="w-4 h-4" />
-            </button>
+            </a>
           </div>
         </div>
 
-        {/* Right: Featured England National Team Photo */}
+        {/* Right: Featured England National Team Photo - Small file size, explicit alt text */}
         <div className="lg:col-span-5 relative">
           <div className="relative aspect-[4/3] rounded-2xl overflow-hidden border-2 border-indigo-400/30 shadow-2xl bg-slate-950 group">
-            <img
-              src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=900&q=80"
-              alt="England National Football Team on the pitch"
-              className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700"
-            />
-            {/* Gradient overlay */}
+            {!imageError ? (
+              <img
+                src="https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=75"
+                alt="England National Football Team players on the pitch under floodlights celebrating in white Euro 2024 home shirts"
+                loading="lazy"
+                onLoad={() => setImageLoaded(true)}
+                onError={() => setImageError(true)}
+                className={`w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 ${
+                  imageLoaded ? 'opacity-100' : 'opacity-80'
+                }`}
+              />
+            ) : null}
+
+            {/* Visual Fallback Graphic ensuring picture is always clearly seen */}
+            {imageError && (
+              <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-blue-950 via-slate-900 to-red-950 text-center">
+                <Shield className="w-16 h-16 text-red-500 mb-2" />
+                <span className="text-sm font-black text-white font-['Cabinet_Grotesk']">
+                  England National Football Team
+                </span>
+                <span className="text-xs text-slate-300">Official Three Lions Euro 2024 Strips</span>
+              </div>
+            )}
+
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20 to-transparent pointer-events-none" />
 
-            {/* Sticker Pill on top of photo */}
             <div className="absolute top-3 left-3 flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-950/80 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold shadow-md">
               <Shield className="w-3.5 h-3.5 text-red-400" />
               <span>The Three Lions</span>
             </div>
 
-            {/* Bottom Photo Caption */}
             <div className="absolute bottom-3 left-3 right-3 flex items-end justify-between">
               <div>
                 <span className="block text-white font-black text-sm font-['Cabinet_Grotesk']">
@@ -118,6 +146,6 @@ export const EnglandSpotlight: React.FC<EnglandSpotlightProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };

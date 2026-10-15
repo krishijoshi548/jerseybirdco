@@ -1,5 +1,5 @@
 export interface JerseyOption {
-  edition: string; // e.g. "Authentic Player Issue", "Stadium Replica", "Long Sleeve", "Retro Classic"
+  edition: string;
   priceUSD: number;
   priceGBP: number;
   priceEUR: number;
@@ -13,26 +13,24 @@ export interface JerseyBlog {
   teamType: 'Premier League' | 'National Team';
   season: '2024/25' | '2023/24' | '2022/23' | '2021/22' | '2019/20' | '2018/19';
   kitType: 'Home' | 'Away' | 'Third' | 'Special Edition';
-  rating: number; // e.g. 9.4
+  rating: number;
   readingTime: string;
   publishDate: string;
-  
-  // Pricing & Options information
-  priceUSD: number; // base price (Replica)
-  priceUSDAuthentic: number; // pro/match edition
+  priceUSD: number;
+  priceUSDAuthentic: number;
   availableOptions: JerseyOption[];
   availableSizes: string[];
   sleeveOptions: string[];
   badgeOptions: { name: string; priceUSD: number }[];
   inStockStatus: 'In Stock' | 'Limited Stock' | 'Sold Out (Collector Value)' | 'Pre-Order';
   retailers: { name: string; estimatedPrice: string; inStock: boolean }[];
-
   author: {
     name: string;
     avatar: string;
     role: string;
   };
   image: string;
+  altText: string;
   accentColor: string;
   shortDescription: string;
   designStory: string;
@@ -102,13 +100,15 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Oliver Vance',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=75',
       role: 'International Apparel Specialist'
     },
-    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+    // Small image optimized for fast loading
+    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=600&q=75',
+    altText: 'England National Football Team players on pitch wearing white 2024 home shirts with Three Lions crest',
     accentColor: '#002B7F',
     shortDescription: 'England’s 2024 home strip reinterprets their legendary 1966 track top aesthetic with classic navy cuffs, fine red sleeve pinstripes, and an iconic collar fold.',
-    designStory: 'Crafted as the tournament armor for Gareth Southgate’s squad during Euro 2024 in Germany, the 2024 England home shirt delivers pure understated elegance. The crisp optic white torso is framed by a bold navy foldover collar accented with a graduated red and blue stripe. It represents England’s heritage from 1966 and 1996 while incorporating next-generation 4D ventilation.',
+    designStory: 'Crafted as tournament armor for Euro 2024 in Germany, the 2024 England home shirt delivers pure understated elegance. The crisp optic white torso is framed by a bold navy foldover collar accented with a graduated red and blue stripe. It represents England’s heritage from 1966 and 1996 while incorporating next-generation 4D ventilation.',
     fabricTech: '4D moisture-mapped open-cell micro knit',
     collarStyle: 'Retro hybrid polo-crew with navy base and tricolor stripe tipping',
     keyDetails: [
@@ -177,10 +177,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Theo Sterling',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=75',
       role: 'Kit Pricing & Specs Editor'
     },
-    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=75',
+    altText: 'Arsenal FC red and white home football jersey with metallic gold crest and lightning detail',
     accentColor: '#EF0107',
     shortDescription: 'Marking the 20th anniversary of the 2003/04 Invincibles campaign, Arsenal infused their traditional scarlet body with radiant lightning gold trims and record stitching.',
     designStory: 'Two decades after Arsène Wenger’s men completed an unprecedented 38-game unbeaten league journey, this kit delivered one of the most culturally resonant shirts of the Emirates era. The shirt pairs the signature bright red core and clean white raglan sleeves with metallic gold embroidery across the crest outline and trim. An embossed lightning pattern streaks subtly through the fabric weave, calling back to the iconic 1995/96 away graphic.',
@@ -245,10 +246,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Oliver Vance',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=75',
       role: 'International Kits Specialist'
     },
-    image: 'https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=600&q=75',
+    altText: 'England National Team player celebrating on pitch under stadium lights in deep purple away kit',
     accentColor: '#4A154B',
     shortDescription: 'Merging England’s traditional navy and royal away colors with red accents to pioneer an unreleased deep raisin purple shade, accented by vibrant multi-colored side panels.',
     designStory: 'Subverting decades of red and royal blue away strips, the 2024 England change shirt adopts an opulent deep raisin purple. Seven complementary hues accent the graphic rib trim along the flank, while the golden Three Lions crest shines against the dark backdrop. This jersey sparked national debate while rapidly becoming a modern lifestyle staple.',
@@ -313,10 +315,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Liam Gallagher',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=75',
       role: 'Premier League Apparel Writer'
     },
-    image: 'https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=600&q=75',
+    altText: 'Manchester City sky blue home shirt with white collar and vertical pinstripes',
     accentColor: '#6CABDD',
     shortDescription: 'Honoring the 20th anniversary of City’s move from Maine Road to the Etihad with tonal column vertical striping modeled on the stadium’s spiral walkways.',
     designStory: 'Arriving right as Pep Guardiola’s side clinched the continental treble, this shirt is indelibly tied to an epoch of supreme dominance. Tonal vertical stripes run across the sky blue torso, replicating the four iconic cylindrical concrete spiral walkways that greet visitors at the Etihad Stadium. Crisp white V-neck and sleeve tipping provide timeless contrast.',
@@ -380,10 +383,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Amara Okafor',
-      avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?auto=format&fit=crop&w=150&q=75',
       role: 'Football & Streetwear Curator'
     },
-    image: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1518091043644-c1d4457512c6?auto=format&fit=crop&w=600&q=75',
+    altText: 'Nigeria Naija vibrant green and white eagle feather chevron football jersey',
     accentColor: '#008751',
     shortDescription: 'Selling 3 million pre-orders in hours and shutting down London retail queues, this 1994 tribute revolutionized the intersection of football and high street fashion.',
     designStory: 'No modern football jersey transformed fashion culture quite like Nigeria’s 2018 World Cup home kit. Drawing direct inspiration from the iconic 1994 Nigerian squad, it features an electrifying green and white eagle feather chevron on the torso paired with black and white chevrons over the sleeves. The release became an instant fashion holy grail, praised by Vogue, GQ, and pitch purists alike.',
@@ -448,10 +452,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Callum Hughes',
-      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=150&q=75',
       role: 'Merseyside Archive Lead'
     },
-    image: 'https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1511886929837-354d827aae26?auto=format&fit=crop&w=600&q=75',
+    altText: 'Liverpool FC rich red home shirt with white pinstripes and embroidered golden Liver Bird badge',
     accentColor: '#C8102E',
     shortDescription: 'The shirt that ended Liverpool’s 30-year English league title drought, featuring subtle white pinstripes honoring legendary manager Bob Paisley’s centenary.',
     designStory: 'Commemorating 100 years since the birth of the club’s most decorated manager Bob Paisley OBE, the kit incorporates delicate white pinstripes running through rich crimson fabric. With Paisley’s signature stamped inside the collar in gold, this jersey carried Jürgen Klopp’s record-breaking squad to 99 league points and the historic trophy lift.',
@@ -515,10 +520,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Kenji Takahashi',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=150&q=75',
       role: 'East Asian Football Apparel Specialist'
     },
-    image: 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1543351611-58f69d7c1781?auto=format&fit=crop&w=600&q=75',
+    altText: 'Japan National Football Team Samurai Blue jersey with dynamic folded origami crane graphics',
     accentColor: '#002B7F',
     shortDescription: 'Conceived around the mythical three-legged crow Yatagarasu and traditional paper origami cranes, this kit dazzled as the Samurai Blue toppled world champions.',
     designStory: 'Graphic artists collaborated to design a jersey celebrating Japanese cultural craft. A dynamic glitch pattern of folded paper cranes takes flight across the deep blue jersey, symbolizing prayer for good fortune and victory. Its on-pitch pedigree was cemented when Hajime Moriyasu’s spirited team pulled off stunning comebacks against Germany and Spain.',
@@ -581,10 +587,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'George Bowden',
-      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=150&q=75',
       role: 'Heritage Kit Correspondent'
     },
-    image: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?auto=format&fit=crop&w=600&q=75',
+    altText: 'West Ham United claret and sky blue football shirt with crossed hammers crest',
     accentColor: '#7A263A',
     shortDescription: 'Following their Europa Conference League triumph in Prague, this strip wove iridescent rising bubble rings straight into the classic claret fabric.',
     designStory: 'Capturing East London football heritage, the 2023/24 home shirt for West Ham United embodies East London tradition. Celebrating the historic anthem "I’m Forever Blowing Bubbles", subtle circular bubble motifs are woven directly into the rich claret front panel. Paired with sky blue sleeves and white contrast cuffs, it strikes a balance between romance and grit.',
@@ -649,10 +656,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Julian Navarro',
-      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=150&q=75',
       role: 'Latin American Football Editor'
     },
-    image: 'https://images.unsplash.com/photo-1556056504-5c7696c4c28d?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1556056504-5c7696c4c28d?auto=format&fit=crop&w=600&q=75',
+    altText: 'Argentina Albiceleste sky blue and white striped shirt with golden three-star World Cup badge',
     accentColor: '#75AADB',
     shortDescription: 'The greatest kit of a generation. The Albiceleste stripes adorned with the golden Sun of May on the nape, crowned forever by three golden stars in Qatar.',
     designStory: 'Worn during the most dramatic World Cup final in football history at Lusail Stadium, this shirt features four sky blue vertical stripes on the front and back against crisp optic white. The national emblem "Sol de Mayo" is stamped in gold metallic beneath the collar. Following the penalty shootout victory over France, the third star was added above the crest, cementing its immortal status in sports lore.',
@@ -708,10 +716,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Marcus Bell',
-      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=150&q=75',
       role: 'Modern Kit Critic'
     },
-    image: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1517466787929-bc90951d0974?auto=format&fit=crop&w=600&q=75',
+    altText: 'Chelsea FC black and blustery teal third jersey with hyper crimson details',
     accentColor: '#001489',
     shortDescription: 'Infused with London streetwear energy, this third shirt combined a deep black and teal camo graphic with razor-sharp Crimson pops along the collar and crest.',
     designStory: 'Taking inspiration from Chelsea’s King’s Road fashion origins and modern British streetwear, the 2021/22 third shirt represents a radical departure from traditional royal blue. An expressive, brushstroke houndstooth and camo texture flows across dark teal and black fields, punctuated by vibrant Hyper Crimson accents that glow during floodlit European away fixtures.',
@@ -775,10 +784,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Scott Armstrong',
-      avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=150&q=75',
       role: 'Tyneside Football Columnist'
     },
-    image: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1560272564-c83b66b1ad12?auto=format&fit=crop&w=600&q=75',
+    altText: 'Newcastle United traditional black and white vertical striped home shirt with split collar',
     accentColor: '#000000',
     shortDescription: 'A pure 1980s retro-styled split collar and balanced monochrome stripes as St. James’ Park welcomed Champions League football after 20 years.',
     designStory: 'Newcastle United reached the Champions League for the first time in two decades. This vintage-inspired home shirt features a split V-neck collar, clean black and white stripes of equal proportion, and side split hems. The design struck a deep chord with fans longing for the iconic Keegan era.',
@@ -842,10 +852,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Étienne Laurent',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=75',
       role: 'European Kit Correspondent'
     },
-    image: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1431324155629-1a6deb1dec8d?auto=format&fit=crop&w=600&q=75',
+    altText: 'France National Team white away football shirt featuring oversized golden Gallic rooster crest and tricolor pinstripes',
     accentColor: '#002654',
     shortDescription: 'Resurrecting the magnificent oversized 1980s Gallic rooster badge with dual-gradient blue and red pinstripes running across an elegant optic white canvas.',
     designStory: 'One of the most praised shirts of the international calendar, this strip reimagined the classic 1980s French away aesthetic. The centerpiece is the dramatically enlarged golden Gallic Rooster (Coq Gaulois), flanked by gradient vertical pinstripes that transition seamlessly from royal blue on the left to carmine red on the right. It reflects French haute couture while commanding pitch respect.',
@@ -909,10 +920,11 @@ export const JERSEY_BLOGS: JerseyBlog[] = [
     ],
     author: {
       name: 'Harry Townsend',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=75',
       role: 'Historical Kits Analyst'
     },
-    image: 'https://images.unsplash.com/photo-1579952363873-27f3bade9f55?auto=format&fit=crop&w=1200&q=80',
+    image: 'https://images.unsplash.com/photo-1574629810360-7efbbe195018?auto=format&fit=crop&w=600&q=75',
+    altText: 'Aston Villa claret and sky blue 150th anniversary home jersey with round crest',
     accentColor: '#670E36',
     shortDescription: 'To celebrate Villa’s 150th anniversary and Champions League qualification under Unai Emery, this inaugural kit pairs rich claret and gold typography.',
     designStory: 'Founded in 1874, Aston Villa is one of the foundational clubs of world football. To mark their sesquicentennial year and return to Europe’s top table, Villa released this landmark home kit. The shirt features an opulent claret torso, crisp sky blue sleeves, and a special commemorative "AV 150" gold emblem hot-stamped on the back neck.',

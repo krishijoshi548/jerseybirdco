@@ -17,6 +17,7 @@ import {
   Info,
   CheckCircle2,
   Trophy,
+  HelpCircle,
 } from 'lucide-react';
 import { JerseyBlog, JerseyOption } from '../data/jerseys';
 
@@ -46,11 +47,13 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
   const [selectedSize, setSelectedSize] = useState<string>('M');
   const [selectedSleeve, setSelectedSleeve] = useState<string>('Short Sleeve');
   const [selectedBadgeIndex, setSelectedBadgeIndex] = useState<number>(0);
+  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     setSelectedEditionIndex(0);
     setSelectedSize('M');
     setSelectedBadgeIndex(0);
+    setImageError(false);
     if (jersey && jersey.sleeveOptions.length > 0) {
       setSelectedSleeve(jersey.sleeveOptions[0]);
     }
@@ -147,6 +150,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
                 disabled={!hasPrev}
                 className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
                 title="Previous jersey"
+                aria-label="Previous jersey"
               >
                 <ChevronLeft className="w-4 h-4" />
               </button>
@@ -155,6 +159,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
                 disabled={!hasNext}
                 className="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
                 title="Next jersey"
+                aria-label="Next jersey"
               >
                 <ChevronRight className="w-4 h-4" />
               </button>
@@ -168,6 +173,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
                   ? 'bg-amber-400 text-slate-950 shadow-md shadow-amber-400/20'
                   : 'bg-slate-800 hover:bg-slate-700 text-slate-200'
               }`}
+              aria-label={isBookmarked ? 'Remove saved jersey' : 'Save jersey'}
             >
               <Bookmark className={`w-3.5 h-3.5 ${isBookmarked ? 'fill-slate-950' : ''}`} />
               <span className="hidden sm:inline">{isBookmarked ? 'Saved' : 'Save'}</span>
@@ -178,6 +184,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
               onClick={handleShare}
               className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold bg-slate-800 hover:bg-slate-700 text-slate-200 transition-colors cursor-pointer"
               title="Copy link"
+              aria-label="Share article link"
             >
               {copied ? <Check className="w-3.5 h-3.5 text-amber-400" /> : <Share2 className="w-3.5 h-3.5" />}
               <span className="hidden sm:inline">{copied ? 'Copied' : 'Share'}</span>
@@ -188,6 +195,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
               onClick={onClose}
               className="p-1.5 rounded-xl bg-slate-800 hover:bg-rose-500/20 hover:text-rose-400 text-slate-400 transition-colors cursor-pointer"
               title="Close modal"
+              aria-label="Close modal dialog"
             >
               <X className="w-5 h-5" />
             </button>
@@ -210,13 +218,28 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
               {jersey.title}
             </h1>
 
-            {/* Image Preview */}
+            {/* Image Preview with small size & descriptive alt text */}
             <div className="relative aspect-[16/9] sm:aspect-[21/9] rounded-3xl overflow-hidden bg-slate-950 border-2 border-slate-800 shadow-2xl mb-6">
-              <img
-                src={jersey.image}
-                alt={jersey.title}
-                className="w-full h-full object-cover object-center"
-              />
+              {!imageError ? (
+                <img
+                  src={jersey.image}
+                  alt={jersey.altText}
+                  onError={() => setImageError(true)}
+                  className="w-full h-full object-cover object-center"
+                />
+              ) : null}
+
+              {/* Fallback Graphic ensuring picture is always clearly seen */}
+              {imageError && (
+                <div className="absolute inset-0 flex flex-col items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-950 to-slate-900 text-center">
+                  <Shield className="w-16 h-16 mb-2" style={{ color: jersey.accentColor }} />
+                  <span className="text-lg font-black text-white font-['Cabinet_Grotesk']">
+                    {jersey.team} {jersey.kitType} Shirt
+                  </span>
+                  <span className="text-xs text-slate-300">Season {jersey.season} Official Match Kit</span>
+                </div>
+              )}
+
               <div className="absolute inset-0 bg-gradient-to-t from-[#0b1120] via-transparent to-transparent opacity-85" />
 
               <div className="absolute bottom-4 left-4 right-4 flex items-end justify-between flex-wrap gap-2">
@@ -238,17 +261,26 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
             </div>
           </div>
 
-          {/* Pricing & Editions Interactive Selector */}
+          {/* Section 1: H2 in Question & Answer Format */}
           <div className="bg-[#0b1120]/90 rounded-3xl p-5 sm:p-6 border border-slate-800 space-y-4 shadow-xl">
             <div className="flex items-center justify-between">
               <h2 className="text-sm font-black uppercase tracking-wider text-orange-400 flex items-center gap-2">
-                <Sparkles className="w-4 h-4 text-amber-400" />
-                Select Edition & Compare Prices
+                <HelpCircle className="w-4 h-4 text-amber-400" />
+                How Much Does Each Edition of the {jersey.team} Jersey Cost?
               </h2>
               <span className="text-xs text-slate-300 font-bold">
                 Currency: <strong className="text-amber-300">{currency}</strong>
               </span>
             </div>
+
+            {/* Answer paragraph */}
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              Standard stadium supporter replicas for the {jersey.team} retail starting at{' '}
+              <strong className="text-amber-300 font-bold">{formatPrice(jersey.priceUSD, Math.round(jersey.priceUSD * 0.82), Math.round(jersey.priceUSD * 0.94))}</strong>,
+              while authentic match pro player cuts are priced at{' '}
+              <strong className="text-amber-300 font-bold">{formatPrice(jersey.priceUSDAuthentic, Math.round(jersey.priceUSDAuthentic * 0.82), Math.round(jersey.priceUSDAuthentic * 0.94))}</strong>.
+              Select an edition below to compare specs and calculate your custom total.
+            </p>
 
             {/* Edition Cards Selector */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -360,12 +392,16 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
             </div>
           </div>
 
-          {/* Retailer Availability & Price Comparison */}
+          {/* Section 2: H2 in Question & Answer format for where to buy */}
           <div>
-            <h3 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-3 flex items-center gap-1.5">
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-400 mb-1.5 flex items-center gap-1.5">
               <ShoppingBag className="w-3.5 h-3.5 text-orange-400" />
-              Where To Buy & Verified Retailer Pricing
-            </h3>
+              Where Can You Buy Verified Official {jersey.team} Jerseys?
+            </h2>
+            <p className="text-xs text-slate-400 mb-3 leading-relaxed">
+              Official stock availability and estimated price ranges for this {jersey.team} kit are
+              verified across leading licensed football retailers below.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {jersey.retailers.map((ret) => (
                 <div
@@ -392,21 +428,24 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
             </div>
           </div>
 
-          {/* Design Story & Heritage */}
-          <div className="space-y-3 pt-2">
-            <h3 className="text-base font-black text-white flex items-center gap-2 font-['Cabinet_Grotesk']">
+          {/* Section 3: H2 in Question & Answer format for Design Story */}
+          <div className="space-y-2 pt-2">
+            <h2 className="text-base font-black text-white flex items-center gap-2 font-['Cabinet_Grotesk']">
               <Trophy className="w-4 h-4 text-amber-400" />
-              Design Story & Club/National Heritage
-            </h3>
+              What Is the Cultural Design Story and Heritage Behind This Shirt?
+            </h2>
             <p className="text-slate-200 leading-relaxed text-sm">{jersey.shortDescription}</p>
             <p className="text-slate-300 leading-relaxed text-sm">{jersey.designStory}</p>
           </div>
 
-          {/* Key Tailoring Details */}
+          {/* Section 4: H2 in Question & Answer format for Key Details */}
           <div className="p-4 rounded-2xl bg-[#0b1120] border border-slate-800 space-y-2">
-            <h4 className="text-xs font-black uppercase tracking-wider text-slate-400">
-              Key Details & Features
-            </h4>
+            <h2 className="text-xs font-black uppercase tracking-wider text-slate-300">
+              What Key Technical Features and Match Tailoring Details Are Included?
+            </h2>
+            <p className="text-xs text-slate-400 mb-2">
+              Engineered with {jersey.fabricTech} and crafted with a {jersey.collarStyle.toLowerCase()}.
+            </p>
             <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs text-slate-300">
               {jersey.keyDetails.map((detail, index) => (
                 <li key={index} className="flex items-start gap-2">
@@ -427,7 +466,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
             onClick={onClose}
             className="px-5 py-2.5 rounded-xl text-xs font-black bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-slate-950 transition-all cursor-pointer shadow-md shadow-orange-500/20"
           >
-            Done
+            Done Reading
           </button>
         </div>
       </div>

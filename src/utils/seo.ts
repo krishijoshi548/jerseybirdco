@@ -11,6 +11,7 @@ export interface PageMetadata {
 export const SEO_CONFIGS = {
   all: {
     path: '/all-jerseys',
+    // Title rule check: 52 characters (30-60 character standard)
     title: 'Football Jersey Prices & Editions Guide | JerseyBird',
     // Character count: 149 characters (Aim: 140-160)
     // Primary keyword: "football jersey prices"
@@ -20,7 +21,8 @@ export const SEO_CONFIGS = {
   },
   national: {
     path: '/national-jerseys',
-    title: 'National Football Jerseys: Prices & Editions | JerseyBird',
+    // Title rule check: 47 characters (30-60 character standard)
+    title: 'National Football Jerseys & Prices | JerseyBird',
     // Character count: 151 characters (Aim: 140-160)
     // Primary keyword: "national football jerseys"
     description:
@@ -29,7 +31,8 @@ export const SEO_CONFIGS = {
   },
   premierLeague: {
     path: '/premier-league-jerseys',
-    title: 'Premier League Jerseys: Prices & Options | JerseyBird',
+    // Title rule check: 50 characters (30-60 character standard)
+    title: 'Premier League Jerseys: Prices & Cuts | JerseyBird',
     // Character count: 150 characters (Aim: 140-160)
     // Primary keyword: "Premier League jerseys"
     description:
@@ -37,6 +40,18 @@ export const SEO_CONFIGS = {
     keywords: 'Premier League jerseys, EPL kit prices, Arsenal kit price, Man City jersey, Liverpool shirt',
   },
 } as const;
+
+export function getJerseySEOTitle(jersey: JerseyBlog): string {
+  // Title rule: between 30 and 60 characters, branded with JerseyBird
+  const candidate = `${jersey.team} ${jersey.kitType} Kit Prices | JerseyBird`;
+  if (candidate.length >= 30 && candidate.length <= 60) {
+    return candidate;
+  }
+  if (candidate.length < 30) {
+    return `${jersey.team} ${jersey.kitType} Jersey Prices & Options | JerseyBird`.slice(0, 58);
+  }
+  return candidate.slice(0, 57) + '...';
+}
 
 export function getJerseySEODescription(jersey: JerseyBlog): string {
   // Format target: 140-160 characters
@@ -60,13 +75,12 @@ export function updateMetaTags(meta: {
 }) {
   if (typeof document === 'undefined') return;
 
-  // 1. Page Title
+  // 1. Page Title following 30-60 character rule
   document.title = meta.title;
 
   const origin = window.location.origin;
   const fullUrl = `${origin}${meta.urlPath}`;
 
-  // Helper to set or create a meta tag
   const setMetaTag = (attributeName: string, attributeValue: string, content: string) => {
     let tag = document.querySelector(`meta[${attributeName}="${attributeValue}"]`);
     if (!tag) {
@@ -77,7 +91,7 @@ export function updateMetaTags(meta: {
     tag.setAttribute('content', content);
   };
 
-  // 2. Standard Meta Description
+  // 2. Standard Meta Description (140-160 characters)
   setMetaTag('name', 'description', meta.description);
 
   // 3. OpenGraph Tags
