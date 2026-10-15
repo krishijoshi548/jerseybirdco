@@ -18,6 +18,7 @@ import {
   CheckCircle2,
   Trophy,
   HelpCircle,
+  ExternalLink,
 } from 'lucide-react';
 import { JerseyBlog, JerseyOption } from '../data/jerseys';
 
@@ -436,7 +437,7 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
             </h2>
             <p className="text-slate-200 leading-relaxed text-sm">{jersey.shortDescription}</p>
 
-            {/* Embedded Article Photo with small size (<100kb), alt text & visible picture */}
+            {/* Embedded Article Photo */}
             {jersey.articleImage && (
               <figure className="my-4 rounded-2xl overflow-hidden border border-slate-700/80 bg-[#070c18] shadow-2xl">
                 <img
@@ -448,13 +449,21 @@ export const JerseyModal: React.FC<JerseyModalProps> = ({
                     (e.target as HTMLImageElement).src = jersey.image;
                   }}
                 />
-                <figcaption className="px-4 py-2.5 text-xs text-slate-300 bg-slate-950/95 border-t border-slate-800 flex items-center justify-between">
+                <figcaption className="px-4 py-2.5 text-xs text-slate-300 bg-slate-950/95 border-t border-slate-800 flex items-center justify-between flex-wrap gap-2">
                   <span className="font-medium text-slate-200">
                     {jersey.articleImageCaption || `Official ${jersey.team} match kit action photo`}
                   </span>
-                  <span className="text-[10px] text-emerald-400 font-bold uppercase tracking-wider shrink-0 ml-2 px-2 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/30">
-                    Photo &lt; 100KB
-                  </span>
+                  {jersey.articleSourceUrl && (
+                    <a
+                      href={jersey.articleSourceUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[11px] text-orange-400 hover:text-orange-300 underline font-medium inline-flex items-center gap-1 transition-colors"
+                    >
+                      <span>View source article photo</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </a>
+                  )}
                 </figcaption>
               </figure>
             )}
