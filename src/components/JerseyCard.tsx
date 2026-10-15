@@ -199,13 +199,19 @@ export const JerseyCard: React.FC<JerseyCardProps> = ({
             <span className="text-slate-500">{jersey.badgeOptions.length} badge options</span>
           </div>
 
-          <button
-            onClick={() => onOpenDetails(jersey)}
+          <a
+            href={`/jersey/${jersey.id}`}
+            onClick={(e) => {
+              if (!e.metaKey && !e.ctrlKey) {
+                e.preventDefault();
+                onOpenDetails(jersey);
+              }
+            }}
             className="inline-flex items-center gap-1 px-3.5 py-2 rounded-xl text-xs font-black bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-400 hover:to-amber-400 text-slate-950 transition-all cursor-pointer shadow-md shadow-orange-500/20 transform hover:-translate-y-0.5"
           >
             <span>Options & Prices</span>
             <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+          </a>
         </div>
       </div>
     </article>

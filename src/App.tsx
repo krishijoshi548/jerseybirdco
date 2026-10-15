@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef, useEffect } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { JERSEY_BLOGS, JerseyBlog } from './data/jerseys';
 import { Navbar } from './components/Navbar';
 import { Hero } from './components/Hero';
@@ -9,12 +9,34 @@ import { JerseyModal } from './components/JerseyModal';
 import { BookmarksDrawer } from './components/BookmarksDrawer';
 import { Footer } from './components/Footer';
 import { SearchX, RotateCcw } from 'lucide-react';
+import { SEO_CONFIGS, getJerseySEODescription, updateMetaTags } from './utils/seo';
 
 const LOCAL_STORAGE_BOOKMARKS_KEY = 'jerseybird_saved_kits';
 
 export default function App() {
+  // Helper to parse path from initial URL
+  const getInitialRouteState = () => {
+    if (typeof window === 'undefined') {
+      return { category: 'All', jerseyId: null };
+    }
+    const path = window.location.pathname.toLowerCase();
+    if (path.includes('national-jerseys')) {
+      return { category: 'National Team', jerseyId: null };
+    }
+    if (path.includes('premier-league-jerseys')) {
+      return { category: 'Premier League', jerseyId: null };
+    }
+    if (path.includes('/jersey/')) {
+      const id = path.split('/jersey/')[1]?.replace(/\/$/, '');
+      return { category: 'All', jerseyId: id };
+    }
+    return { category: 'All', jerseyId: null };
+  };
+
+  const initialRoute = getInitialRouteState();
+
   // Navigation & Category State (Taskbar)
-  const [selectedCategory, setSelectedCategory] = useState<string>('All');
+  const [selectedCategory, setSelectedCategory] = useState<string>(initialRoute.category);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedSeason, setSelectedSeason] = useState<string>('All');
   const [selectedKitType, setSelectedKitType] = useState<string>('All');
@@ -23,7 +45,12 @@ export default function App() {
   const [currency, setCurrency] = useState<'USD' | 'GBP' | 'EUR'>('USD');
 
   // Modal & Drawer State
-  const [activeJersey, setActiveJersey] = useState<JerseyBlog | null>(null);
+  const [activeJersey, setActiveJersey] = useState<JerseyBlog | null>(() => {
+    if (initialRoute.jerseyId) {
+      return JERSEY_BLOGS.find((j) => j.id === initialRoute.jerseyId) || null;
+    }
+    return null;
+  });
   const [isBookmarksOpen, setIsBookmarksOpen] = useState(false);
 
   // Bookmarks persisted in LocalStorage
@@ -37,6 +64,67 @@ export default function App() {
   });
 
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Dynamic SEO and URL sync
+  useEffect(() => {
+    if (activeJersey) {
+      const uniqueUrl = `/jersey/${activeJersey.id}`;
+      updateMetaTags({
+        title: `${activeJersey.title} Prices & Options | JerseyBird`,
+        description: getJerseySEODescription(activeJersey),
+        urlPath: uniqueUrl,
+        image: activeJersey.image,
+      });
+      if (window.location.pathname !== uniqueUrl) {
+        window.history.pushState({ jerseyId: activeJersey.id }, '', uniqueUrl);
+      }
+    } else if (selectedCategory === 'National Team') {
+      updateMetaTags({
+        title: SEO_CONFIGS.national.title,
+        description: SEO_CONFIGS.national.description,
+        urlPath: SEO_CONFIGS.national.path,
+      });
+      if (window.location.pathname !== SEO_CONFIGS.national.path) {
+        window.history.pushState({ category: 'National Team' }, '', SEO_CONFIGS.national.path);
+      }
+    } else if (selectedCategory === 'Premier League') {
+      updateMetaTags({
+        title: SEO_CONFIGS.premierLeague.title,
+        description: SEO_CONFIGS.premierLeague.description,
+        urlPath: SEO_CONFIGS.premierLeague.path,
+      });
+      if (window.location.pathname !== SEO_CONFIGS.premierLeague.path) {
+        window.history.pushState({ category: 'Premier League' }, '', SEO_CONFIGS.premierLeague.path);
+      }
+    } else {
+      updateMetaTags({
+        title: SEO_CONFIGS.all.title,
+        description: SEO_CONFIGS.all.description,
+        urlPath: SEO_CONFIGS.all.path,
+      });
+      if (
+        window.location.pathname !== SEO_CONFIGS.all.path &&
+        window.location.pathname !== '/'
+      ) {
+        window.history.pushState({ category: 'All' }, '', SEO_CONFIGS.all.path);
+      }
+    }
+  }, [activeJersey, selectedCategory]);
+
+  // Handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = () => {
+      const route = getInitialRouteState();
+      setSelectedCategory(route.category);
+      if (route.jerseyId) {
+        setActiveJersey(JERSEY_BLOGS.find((j) => j.id === route.jerseyId) || null);
+      } else {
+        setActiveJersey(null);
+      }
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
 
   // Sync bookmarks to localStorage
   useEffect(() => {
@@ -188,9 +276,21 @@ export default function App() {
     }
   };
 
+  const handleCloseModal = () => {
+    setActiveJersey(null);
+    // Restore classification URL
+    if (selectedCategory === 'National Team') {
+      window.history.pushState({}, '', SEO_CONFIGS.national.path);
+    } else if (selectedCategory === 'Premier League') {
+      window.history.pushState({}, '', SEO_CONFIGS.premierLeague.path);
+    } else {
+      window.history.pushState({}, '', SEO_CONFIGS.all.path);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#0b1120] text-slate-100 flex flex-col font-['Plus_Jakarta_Sans'] selection:bg-orange-500 selection:text-white">
-      {/* Top Navbar with JerseyBird Branding and Taskbar Sections */}
+      {/* Top Navbar with JerseyBird Branding and New-Tab Taskbar Links */}
       <Navbar
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => {
@@ -293,7 +393,7 @@ export default function App() {
       {/* Jersey Options & Pricing Modal */}
       <JerseyModal
         jersey={activeJersey}
-        onClose={() => setActiveJersey(null)}
+        onClose={handleCloseModal}
         isBookmarked={activeJersey ? bookmarkedIds.includes(activeJersey.id) : false}
         onToggleBookmark={handleToggleBookmark}
         onNavigate={handleModalNavigate}

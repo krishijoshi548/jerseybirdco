@@ -1,5 +1,5 @@
 import React from 'react';
-import { Bookmark, Search, Globe, Shield, Bird, Sparkles } from 'lucide-react';
+import { Bookmark, Search, Globe, Shield, Bird, ExternalLink } from 'lucide-react';
 
 interface NavbarProps {
   selectedCategory: string;
@@ -25,9 +25,16 @@ export const Navbar: React.FC<NavbarProps> = ({
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="h-20 flex items-center justify-between gap-4">
           {/* Playful Brand Logo - JerseyBird */}
-          <div
-            onClick={() => onSelectCategory('All')}
+          <a
+            href="/all-jerseys"
+            onClick={(e) => {
+              if (!e.metaKey && !e.ctrlKey) {
+                e.preventDefault();
+                onSelectCategory('All');
+              }
+            }}
             className="flex items-center gap-3 cursor-pointer select-none shrink-0 group"
+            title="JerseyBird Home"
           >
             <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-orange-500 via-rose-500 to-amber-400 flex items-center justify-center text-white shadow-lg shadow-orange-500/30 group-hover:scale-105 group-hover:rotate-3 transition-transform duration-300">
               <Bird className="w-6 h-6 stroke-[2.5]" />
@@ -45,44 +52,62 @@ export const Navbar: React.FC<NavbarProps> = ({
                 Premier League & National Team Jerseys
               </p>
             </div>
-          </div>
+          </a>
 
-          {/* Main Taskbar Sections: National Jerseys & Premier League Jerseys */}
+          {/* Main Taskbar Sections: Opens each classification in a new tab with clean unique URLs */}
           <nav className="flex items-center gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-slate-800/90 shadow-inner">
-            <button
+            {/* National Jerseys Link -> /national-jerseys in new tab */}
+            <a
+              href="/national-jerseys"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => onSelectCategory('National Team')}
-              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black tracking-tight transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black tracking-tight transition-all cursor-pointer group ${
                 selectedCategory === 'National Team'
                   ? 'bg-gradient-to-r from-rose-500 to-orange-500 text-white shadow-lg shadow-rose-500/25 scale-[1.02]'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
               }`}
+              title="Open National Jerseys in a new tab"
             >
               <Globe className={`w-4 h-4 ${selectedCategory === 'National Team' ? 'text-white' : 'text-rose-400'}`} />
               <span>National Jerseys</span>
-            </button>
+              <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+            </a>
 
-            <button
+            {/* Premier League Jerseys Link -> /premier-league-jerseys in new tab */}
+            <a
+              href="/premier-league-jerseys"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => onSelectCategory('Premier League')}
-              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black tracking-tight transition-all cursor-pointer ${
+              className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-black tracking-tight transition-all cursor-pointer group ${
                 selectedCategory === 'Premier League'
                   ? 'bg-gradient-to-r from-indigo-500 to-purple-600 text-white shadow-lg shadow-indigo-500/25 scale-[1.02]'
                   : 'text-slate-300 hover:text-white hover:bg-slate-800/80'
               }`}
+              title="Open Premier League Jerseys in a new tab"
             >
               <Shield className={`w-4 h-4 ${selectedCategory === 'Premier League' ? 'text-white' : 'text-indigo-400'}`} />
               <span>Premier League Jerseys</span>
-            </button>
+              <ExternalLink className="w-3 h-3 opacity-60 group-hover:opacity-100 transition-opacity" />
+            </a>
 
-            <button
+            {/* All Kits Link -> /all-jerseys in new tab */}
+            <a
+              href="/all-jerseys"
+              target="_blank"
+              rel="noopener noreferrer"
               onClick={() => onSelectCategory('All')}
-              className={`hidden md:inline-flex px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
+              className={`hidden md:inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer group ${
                 selectedCategory === 'All'
                   ? 'bg-slate-800 text-amber-300'
                   : 'text-slate-400 hover:text-white hover:bg-slate-800/50'
               }`}
+              title="Open All Strips in a new tab"
             >
-              All Kits
-            </button>
+              <span>All Kits</span>
+              <ExternalLink className="w-2.5 h-2.5 opacity-50 group-hover:opacity-100" />
+            </a>
           </nav>
 
           {/* Right Action Controls: Currency + Quick Search + Saved Kits */}
